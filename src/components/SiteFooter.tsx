@@ -26,11 +26,8 @@ export default function SiteFooter() {
                         aria-label="Voltar para a página inicial"
                         className="grid h-9 w-28 place-items-center"
                     >
-                        <Image src="/logoavila.png" alt="Logo" width={100} height={100} />
+                        <Image src="/logoavila.png" alt="Logo" width={30} height={30} />
                     </Link>
-                    <p className="hidden shrink min-w-0 truncate text-white/70 md:block">
-                        Precatórios com segurança e agilidade.
-                    </p>
                 </div>
 
                 {/* centro: navegação horizontal */}
@@ -49,7 +46,7 @@ export default function SiteFooter() {
                     </a>
                     <span className="inline-flex items-center gap-1.5">
                         <Phone className="h-4 w-4 text-[#EBBD46]" />
-                        (11) 0000-0000
+                        (11) 99533-7111
                     </span>
                     <span className="inline-flex items-center gap-1.5">
                         <MapPin className="h-4 w-4 text-[#EBBD46]" />

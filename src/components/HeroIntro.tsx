@@ -69,5 +69,6 @@ export default function HeroIntro({ bgUrl = "/hero-bg.jpg" }: { bgUrl?: string }
         </div>
       </div>
     </section>
+
   );
 }

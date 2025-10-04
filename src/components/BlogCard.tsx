@@ -1,5 +1,6 @@
-// components/BlogCard.tsx
+// src/components/BlogCard.tsx
 import Link from "next/link";
+import GlassCard from "@/components/GlassCard";
 
 export default function BlogCard({
   slug,
@@ -16,46 +17,40 @@ export default function BlogCard({
   tags: string[];
   excerpt: string;
 }) {
-  const d = new Date(date);
-  const dateFormatted = d.toLocaleDateString("pt-BR", {
-    year: "numeric",
-    month: "long",
-    day: "2-digit",
-  });
-
   return (
-    <article className="group flex h-full flex-col rounded-2xl border border-black/5 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-      <header className="mb-3">
-        <div className="flex flex-wrap items-center gap-2 text-xs text-[#555]">
-          <time dateTime={date} className="font-medium">{dateFormatted}</time>
-          <span aria-hidden>•</span>
-          <span>{readingTime}</span>
-        </div>
-        <h3 className="mt-2 text-lg font-semibold text-[#00005A]">
-          <Link href={`/blog/${slug}`} className="hover:underline">
-            {title}
-          </Link>
+    <GlassCard as="article" className="flex h-full flex-col">
+      <header>
+        <h3 className="text-lg font-semibold leading-snug text-[color:var(--brand-blue)]">
+          {title}
         </h3>
+        <div className="mt-1 text-xs text-[#444]">
+          {date} • {readingTime}
+        </div>
       </header>
 
-      <p className="text-sm text-[#333]">{excerpt}</p>
+      <p className="mt-3 text-sm leading-relaxed text-[#333]">{excerpt}</p>
 
-      <footer className="mt-4 flex flex-wrap items-center gap-2">
-        {tags.map((t) => (
-          <span key={t} className="rounded-full border border-black/10 bg-[#F5F7FF] px-2.5 py-1 text-xs text-[#00005A]">
-            {t}
-          </span>
-        ))}
-      </footer>
+      {tags?.length ? (
+        <footer className="mt-4 flex flex-wrap gap-2">
+          {tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-full border border-white/50 bg-white/60 px-2.5 py-1 text-[11px] text-[color:var(--brand-blue)] backdrop-blur-md"
+            >
+              {t}
+            </span>
+          ))}
+        </footer>
+      ) : null}
 
       <div className="mt-auto pt-4">
         <Link
           href={`/blog/${slug}`}
-          className="text-sm font-semibold text-[#00005A] underline-offset-4 hover:underline"
+          className="text-sm font-semibold text-[color:var(--brand-blue)] underline-offset-4 hover:underline"
         >
           Ler mais →
         </Link>
       </div>
-    </article>
+    </GlassCard>
   );
 }

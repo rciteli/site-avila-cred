@@ -26,8 +26,8 @@ export default function ContatoPage() {
                         <span className="inline-block rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-white/85">
                             Fale com um especialista
                         </span>
-                        <h1 className="mt-4 text-4xl font-bold leading-tight md:text-5xl">Entre em contato</h1>
-                        <p className="mt-3 text-white/85 md:text-[15.5px]">
+                        <h1 className="mt-4 text-4xl font-bold leading-tight md:text-5xl text-[#e5e6ff]">Entre em contato</h1>
+                        <p className="mt-3 text-[#c6c7db]/85 md:text-[15.5px] ">
                             Envie seus dados e receba uma análise gratuita em até <strong>1 dia útil</strong>.
                             Transparência do primeiro contato ao pagamento.
                         </p>
@@ -47,7 +47,7 @@ export default function ContatoPage() {
                             <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-[#EBBD46]/40" />
                             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
                                 <h2 className="text-xl font-semibold text-[#000030] md:text-2xl">Envie sua mensagem</h2>
-                                <span className="rounded-full border border-[#00005A]/25 bg-[#00005A]/10 px-3 py-1 text-xs font-semibold text-[#00005A]">
+                                <span className="rounded-full border border-[#d4af37]/100 bg-[#00005A]/10 px-3 py-1 text-xs font-semibold text-[#00005A]">
                                     Retorno em até 1 dia útil
                                 </span>
                             </div>
@@ -58,7 +58,7 @@ export default function ContatoPage() {
                         {/* Lateral de informações */}
                         <aside className="space-y-6 rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8">
                             <div>
-                                <h3 className="text-lg font-semibold">Canais de atendimento</h3>
+                                <h3 className="text-lg font-semibold text-[#e5e6ff]">Canais de atendimento</h3>
                                 <ul className="mt-4 space-y-3 text-sm text-white/85">
                                     <li className="flex items-center gap-2">
                                         <Mail className="h-4 w-4 text-[#EBBD46]" />
@@ -68,22 +68,13 @@ export default function ContatoPage() {
                                     </li>
                                     <li className="flex items-center gap-2">
                                         <Phone className="h-4 w-4 text-[#EBBD46]" />
-                                        <span>(11) 0000-0000</span>
+                                        <span>(11) 91359-6105</span>
                                     </li>
                                     <li className="flex items-center gap-2">
                                         <MapPin className="h-4 w-4 text-[#EBBD46]" />
                                         <span>São Paulo – SP</span>
                                     </li>
                                 </ul>
-
-                                {/* Atalho WhatsApp (menor) */}
-                                <div className="mt-4">
-                                    <WhatsAppButton
-                                        phone={WHATSAPP_NUMBER}
-                                        message="Olá! Vim pela página de contato e preciso de ajuda com meu precatório."
-                                        className="w-full justify-center"
-                                    />
-                                </div>
                             </div>
 
                             <div className="grid gap-3">
@@ -112,27 +103,6 @@ export default function ContatoPage() {
                 </div>
             </section>
 
-            {/* CTA FINAL (sem onClick em Server Component) */}
-            <section className="pb-20">
-                <div className="mx-auto max-w-7xl px-4">
-                    <div className="grid items-center gap-8 rounded-3xl border border-white/10 bg-white/5 p-6 md:grid-cols-[1.4fr_0.6fr] md:p-10">
-                        <div>
-                            <h3 className="text-2xl font-semibold md:text-3xl">Pronto para antecipar seu precatório?</h3>
-                            <p className="mt-2 max-w-2xl text-white/80">
-                                Envie seus dados para análise gratuita e receba contato em até 1 dia útil.
-                            </p>
-                        </div>
-                        <div className="flex flex-wrap items-center justify-start gap-3 md:justify-end">
-                            <a
-                                href="#form-contato"
-                                className="inline-flex items-center gap-2 rounded-2xl bg-[#EBBD46] px-6 py-3 text-sm font-semibold text-[#000030] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
-                            >
-                                Enviar mensagem →
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
             <SiteFooter />
             {/* Botão flutuante opcional — ative removendo os comentários */}
             {/* <WhatsAppButton phone={WHATSAPP_NUMBER} variant="floating" /> */}

@@ -21,6 +21,7 @@ export default function PrecatoriosPage() {
             <TiposPrecatorios />
             <ProcessoEtapasVender />
             <SimuladorPrecatorio />
+            <div className="h-[1px] w-full bg-[#EBBD46]" />
             <ChecklistDocumentos />
             <ComparativoVendaAguardar />
             <PersonasCards />

@@ -24,3 +24,74 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* === Brand tokens (claro como padrão) === */
+:root {
+  --brand-blue: #00005a;      /* azul principal */
+  --brand-gold: #d4af37;      /* dourado clássico */
+  --brand-gold-20: color-mix(in srgb, var(--brand-gold) 20%, transparent);
+  --glass-bg-60: rgba(255,255,255,0.60);
+  --glass-bg-70: rgba(255,255,255,0.70);
+  --glass-border: rgba(255,255,255,0.45);
+  --glass-shadow: 0 12px 32px rgba(0,0,0,.08);
+}
+
+/* Fundo “surface” suave para seções com glass (opcional) */
+.surface-blue {
+  background:
+    radial-gradient(1200px 600px at 10% -20%, rgba(0,0,90,.06), transparent 60%),
+    radial-gradient(1200px 600px at 90% 120%, rgba(212,175,55,.08), transparent 60%),
+    #ffffff;
+}
+
+/* === Glass cards === */
+.glass-card {
+  position: relative;
+  border-radius: 1.25rem;           /* ~rounded-2xl */
+  background: linear-gradient(180deg, var(--glass-bg-70), var(--glass-bg-60));
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 42px rgba(0,0,0,.10);
+  border-color: rgba(255,255,255,.55);
+}
+
+/* Filete dourado sutil no contorno, com máscara para parecer “inside stroke” */
+.glass-border-gold::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px; /* espessura do filete */
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.6), rgba(255,255,255,.1) 40%, rgba(0,0,90,.15)),
+    linear-gradient(135deg, var(--brand-gold), transparent 60%);
+  -webkit-mask: 
+    linear-gradient(#000 0 0) content-box, 
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Título/ícone com acento dourado */
+.text-gold { color: var(--brand-gold); }
+.bg-gold { background-color: color-mix(in srgb, var(--brand-gold) 10%, transparent); }
+
+/* Botão primário com dourado sutil no foco/hover (opcional) */
+.button-primary {
+  background: var(--brand-blue);
+  color: #fff;
+  border-radius: .875rem;
+  padding: .75rem 1rem;
+  font-weight: 600;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.button-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 24px var(--brand-gold-20); }
+.button-primary:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
