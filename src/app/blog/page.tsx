@@ -6,15 +6,46 @@ import BlogCard from "@/components/BlogCard";
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
 
+// `metadataBase` já está no layout como https://avilacred.com.br
 export const metadata: Metadata = {
   title: "Blog | ÁvilaCred",
-  description: "Conteúdo educativo sobre precatórios, RPV, cessão de crédito e liquidez.",
+  description:
+    "Conteúdo educativo sobre precatórios, RPV, cessão de crédito e liquidez.",
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    type: "website",
+    url: "/blog",
+    siteName: "ÁvilaCred",
+    title: "Blog | ÁvilaCred",
+    description:
+      "Conteúdo educativo sobre precatórios, RPV, cessão de crédito e liquidez.",
+    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "ÁvilaCred" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog | ÁvilaCred",
+    description:
+      "Conteúdo educativo sobre precatórios, RPV, cessão de crédito e liquidez.",
+    images: ["/og.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
 };
 
 export default function BlogPage() {
   return (
     <main className="min-h-screen bg-[#000030] text-white">
       <Nav />
+
       {/* Hero simples */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(60rem_40rem_at_20%_-10%,rgba(235,189,70,0.12),transparent_60%)]" />
@@ -22,7 +53,9 @@ export default function BlogPage() {
           <span className="inline-block rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-white/85">
             Blog ÁvilaCred
           </span>
-          <h1 className="mt-4 text-4xl font-bold leading-tight md:text-5xl">Aprenda sobre precatórios</h1>
+          <h1 className="mt-4 text-4xl font-bold leading-tight md:text-5xl">
+            Aprenda sobre precatórios
+          </h1>
           <p className="mt-3 max-w-2xl text-white/85 md:text-[15.5px]">
             Guias práticos e educacionais sobre RPV, cessão de crédito, documentação e mercado.
           </p>
@@ -39,12 +72,16 @@ export default function BlogPage() {
           </div>
 
           <div className="mt-10 text-center">
-            <Link href="/contato" className="inline-flex items-center rounded-2xl bg-[#EBBD46] px-6 py-3 text-sm font-semibold text-[#000030] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+            <Link
+              href="/contato"
+              className="inline-flex items-center rounded-2xl bg-[#EBBD46] px-6 py-3 text-sm font-semibold text-[#000030] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+            >
               Fale com um especialista
             </Link>
           </div>
         </div>
       </section>
+
       <SiteFooter />
     </main>
   );

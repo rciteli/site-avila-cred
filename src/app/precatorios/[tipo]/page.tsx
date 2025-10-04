@@ -39,14 +39,52 @@ export async function generateMetadata(
   const data = TYPE_DETAILS[key];
   if (!data) return {};
 
+  const path = `/precatorios/${key}`;
   const title = `${data.titulo} – Venda e Antecipação | ÁvilaCred`;
   const description = `Antecipe ${data.titulo.toLowerCase()} com segurança e agilidade. ${data.heroResumo} Análise gratuita e retorno em até 1 dia útil.`;
+
+  // Se quiser imagens OG específicas por tipo, nomeie e coloque em /public:
+  // const ogImage = `/og-precatorios-${key}.jpg`;
+  const ogImage = "/og.jpg";
 
   return {
     title,
     description,
-    openGraph: { title, description, type: "website", url: `/precatorios/${key}` },
-    alternates: { canonical: `/precatorios/${key}` },
+    alternates: { canonical: path },
+    keywords: [
+      "precatórios",
+      "venda de precatórios",
+      "antecipação de precatórios",
+      "cessão de crédito",
+      data.titulo,
+      `precatório ${data.titulo.toLowerCase()}`,
+      "ÁvilaCred",
+    ],
+    openGraph: {
+      type: "website",
+      url: path,           // vira absoluto via metadataBase do layout
+      siteName: "ÁvilaCred",
+      title,
+      description,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: "ÁvilaCred" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
   };
 }
 

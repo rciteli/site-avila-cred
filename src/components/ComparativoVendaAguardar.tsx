@@ -11,7 +11,7 @@ export default function ComparativoVendaAguardar() {
   return (
     <section
       className="
-        py-14
+        py-14 
         [background:
           radial-gradient(60rem_32rem_at_10%_-10%,rgba(0,0,90,.04),transparent_60%),
           radial-gradient(60rem_32rem_at_90%_120%,rgba(235,189,70,.06),transparent_60%),
@@ -19,7 +19,7 @@ export default function ComparativoVendaAguardar() {
         ]
       "
     >
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="mx-auto max-w-7xl p-6 border rounded-2xl border-[#d4af37]/100">
         <h2 className="text-2xl font-semibold text-[#00005A] md:text-3xl">Vender x Aguardar</h2>
         <p className="mt-2 text-[#333]">Compare prós e contras antes de decidir.</p>
 

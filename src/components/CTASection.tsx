@@ -13,7 +13,7 @@ export default function CTASection() {
           </div>
           <div className="flex justify-start md:justify-end">
             <a
-              href="#simulador"
+              href="/contato"
               className="inline-flex items-center gap-2 rounded-2xl bg-[#EBBD46] px-6 py-3 text-sm font-semibold text-[#000030] shadow-sm transition hover:translate-y-[-1px] hover:shadow-lg"
             >
               Simular agora →

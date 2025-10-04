@@ -15,11 +15,49 @@ export async function generateMetadata(
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return {};
+
+  const path = `/blog/${post.slug}`;
+  const title = `${post.title} | Blog ÁvilaCred`;
+  const description = post.excerpt ?? "Conteúdo sobre precatórios, RPV e cessão de crédito.";
+  const ogImage = "/og.jpg"; // troque por um campo do post (ex.: post.image) se existir
+
   return {
-    title: `${post.title} | Blog ÁvilaCred`,
-    description: post.excerpt,
-    openGraph: { title: post.title, description: post.excerpt, type: "article", url: `/blog/${post.slug}` },
-    alternates: { canonical: `/blog/${post.slug}` },
+    title,
+    description,
+    alternates: { canonical: path }, // vira absoluto via metadataBase do layout
+    keywords: [
+      "precatórios",
+      "antecipação de precatórios",
+      "cessão de crédito",
+      "RPV",
+      "ÁvilaCred",
+      ...(post.tags ?? []),
+    ],
+    openGraph: {
+      type: "article",
+      url: path,
+      siteName: "ÁvilaCred",
+      title,
+      description,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
   };
 }
 
