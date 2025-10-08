@@ -117,8 +117,7 @@ export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
 
   // Configure o número destino em .env:
-  // NEXT_PUBLIC_WHATSAPP_PHONE=5521987654321
-  const DEST_PHONE = (process.env.NEXT_PUBLIC_WHATSAPP_PHONE as string) || "55XXXXXXXXXXX";
+  const DEST_PHONE = (process.env.NEXT_PUBLIC_WHATSAPP_PHONE as string);
 
   function buildWhatsAppUrl(phone: string, text: string) {
     const digits = phone.replace(/\D/g, ""); // só dígitos

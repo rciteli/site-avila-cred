@@ -11,7 +11,7 @@ export default function SimulacaoRapida() {
   const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
 
   // Configure no .env.local: NEXT_PUBLIC_WHATSAPP_PHONE=5521987654321
-  const DEST_PHONE = (process.env.NEXT_PUBLIC_WHATSAPP_PHONE as string) || "5511995337111";
+  const DEST_PHONE = (process.env.NEXT_PUBLIC_WHATSAPP_PHONE as string);
 
   function buildWhatsAppUrl(phone: string, text: string) {
     const digits = phone.replace(/\D/g, "");
