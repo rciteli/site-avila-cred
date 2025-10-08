@@ -1,4 +1,4 @@
-// components/ComparativoVendaAguardar.tsx
+// src/components/ComparativoVendaAguardar.tsx
 export default function ComparativoVendaAguardar() {
   const rows = [
     { crit: "Prazo para receber", vender: "Imediato após formalização", aguardar: "Indefinido/cronograma do ente" },
@@ -69,7 +69,7 @@ export default function ComparativoVendaAguardar() {
               </thead>
 
               <tbody>
-                {rows.map((r, i) => (
+                {rows.map((r) => (
                   <tr
                     key={r.crit}
                     className="

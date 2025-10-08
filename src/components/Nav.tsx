@@ -1,3 +1,4 @@
+// src/components/Nav.tsx
 "use client";
 
 import Link from "next/link";
@@ -14,7 +15,6 @@ function useLockBodyScroll(locked: boolean) {
     const prevPaddingRight = root.style.paddingRight;
 
     if (locked) {
-      // evita “pulo” por conta da barra de rolagem no desktop
       const scrollBarWidth = window.innerWidth - root.clientWidth;
       root.style.overflow = "hidden";
       if (scrollBarWidth > 0) root.style.paddingRight = `${scrollBarWidth}px`;
@@ -30,23 +30,34 @@ function useLockBodyScroll(locked: boolean) {
   }, [locked]);
 }
 
-/** Hook simples de breakpoint (md = 768px) */
+/** Tipos legacy para browsers antigos (addListener/removeListener) */
+type LegacyMediaQueryList = MediaQueryList & {
+  addListener: (listener: (this: MediaQueryList, ev: MediaQueryListEvent) => void) => void;
+  removeListener: (listener: (this: MediaQueryList, ev: MediaQueryListEvent) => void) => void;
+};
+
+/** Hook simples de breakpoint (md = 768px) — sem `any` */
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
     const mql = window.matchMedia("(max-width: 767px)");
-    const onChange = (e: MediaQueryListEvent | MediaQueryList) =>
-      setIsMobile("matches" in e ? e.matches : (e as MediaQueryList).matches);
-    onChange(mql);
-    // compat: alguns browsers antigos usam addListener/removeListener
-    try {
-      mql.addEventListener("change", onChange as any);
-      return () => mql.removeEventListener("change", onChange as any);
-    } catch {
-      mql.addListener(onChange as any);
-      return () => mql.removeListener(onChange as any);
+
+    // aplicar estado inicial
+    setIsMobile(mql.matches);
+
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+
+    if (typeof mql.addEventListener === "function") {
+      mql.addEventListener("change", handler);
+      return () => mql.removeEventListener("change", handler);
+    } else {
+      const legacy = mql as LegacyMediaQueryList;
+      legacy.addListener(handler);
+      return () => legacy.removeListener(handler);
     }
   }, []);
+
   return isMobile;
 }
 
@@ -195,7 +206,11 @@ export default function Nav() {
         role="dialog"
         aria-modal="true"
         aria-label="Menu"
-        style={{ height: "100dvh", background: "linear-gradient(180deg,rgba(0,0,48,1) 0%,rgba(0,0,90,1) 100%)" }}
+        style={{
+          height: "100dvh",
+          background:
+            "linear-gradient(180deg,rgba(0,0,48,1) 0%,rgba(0,0,90,1) 100%)",
+        }}
       >
         {/* Topo do drawer */}
         <div className="flex items-center justify-between px-4 py-3">
@@ -229,11 +244,7 @@ export default function Nav() {
         {/* Links mobile (área rolável) */}
         <nav className="min-h-0 overscroll-contain overflow-y-auto px-2">
           <MobileLink href="/sobre" label="Sobre" onClick={() => setOpen(false)} />
-          <MobileLink
-            href="/precatorios"
-            label="Precatórios"
-            onClick={() => setOpen(false)}
-          />
+          <MobileLink href="/precatorios" label="Precatórios" onClick={() => setOpen(false)} />
           <MobileLink href="/blog" label="Blog" onClick={() => setOpen(false)} />
         </nav>
 
