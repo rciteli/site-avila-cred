@@ -63,7 +63,9 @@ export default function PrecatoriosPage() {
       <PrecatoriosHero />
       <TiposPrecatorios />
       <ProcessoEtapasVender />
-      <SimuladorPrecatorio />
+      <section id="simulador" className="scroll-mt-28">
+        <SimuladorPrecatorio />
+      </section>
       <div className="h-[1px] w-full bg-[#EBBD46]" />
       <ChecklistDocumentos />
       <ComparativoVendaAguardar />
