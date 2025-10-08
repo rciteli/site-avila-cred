@@ -44,7 +44,7 @@ function Field({ label, name, type = "text", placeholder = "", required = false 
     // ajuste simples do cursor (mantém experiência fluida na digitação)
     const diff = t.value.length - before.length;
     const pos = Math.max(0, start + (diff > 0 ? 1 : 0));
-    try { t.setSelectionRange(pos, pos); } catch {}
+    try { t.setSelectionRange(pos, pos); } catch { }
   };
 
   const onBlurNormalize = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -117,30 +117,38 @@ export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
 
   // Configure o número destino em .env:
-  const DEST_PHONE = (process.env.NEXT_PUBLIC_WHATSAPP_PHONE as string);
+  const DEST_PHONE = String(process.env.NEXT_PUBLIC_WHATSAPP_PHONE ?? "");
 
   function buildWhatsAppUrl(phone: string, text: string) {
-    const digits = phone.replace(/\D/g, ""); // só dígitos
-    return `https://wa.me/${digits}?text=${encodeURIComponent(text)}`;
+    const digits = (phone || "").replace(/\D/g, "");
+    if (digits.length < 10) throw new Error("NEXT_PUBLIC_WHATSAPP_PHONE ausente/ inválido");
+    const msg = encodeURIComponent(text);
+    return {
+      primary: `https://wa.me/${digits}?text=${msg}`,
+      fallback: `https://api.whatsapp.com/send?phone=${digits}&text=${msg}`,
+    };
+  }
+
+  function openInNewTab(url: string) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("sending");
-
     try {
       const form = e.currentTarget;
       const fd = new FormData(form);
-
-      // Honeypot anti-spam
-      const company = (fd.get("company") as string) || "";
-      if (company.trim()) {
-        setStatus("ok");
-        form.reset();
-        return;
-      }
-
       const get = (k: string) => ((fd.get(k) as string) || "").trim();
+
+      // honeypot
+      if (((fd.get("company") as string) || "").trim()) { setStatus("ok"); form.reset(); return; }
 
       const nome = get("nome");
       const email = get("email");
@@ -151,6 +159,7 @@ export default function ContactForm() {
       const valor = get("valor");
       const mensagem = get("mensagem");
 
+      const origin = typeof window !== "undefined" ? window.location.origin : "https://avilacred.com.br";
       const textLines = [
         "📩 *Novo contato pelo site ÁvilaCred*",
         "",
@@ -163,19 +172,20 @@ export default function ContactForm() {
         `• Valor aproximado: ${valor || "-"}`,
         mensagem ? `• Mensagem: ${mensagem}` : "",
         "",
-        "Origem: https://avilacred.vercel.app",
-      ].filter(Boolean);
+        `Origem: ${origin}`,
+      ].filter(Boolean).join("\n");
 
-      const url = buildWhatsAppUrl(DEST_PHONE, textLines.join("\n"));
+      const { primary, fallback } = buildWhatsAppUrl(DEST_PHONE, textLines);
 
-      const w = window.open(url, "_blank");
-      if (!w || w.closed || typeof w.closed === "undefined") {
-        window.location.href = url;
-      }
+      // tenta nova aba; se o navegador bloquear, faz fallback na mesma aba
+      openInNewTab(primary);
+      // fallback silencioso (alguns bloqueadores barram wa.me)
+      setTimeout(() => { window.location.href = fallback; }, 300);
 
       setStatus("ok");
       form.reset();
-    } catch {
+    } catch (err) {
+      console.error(err);
       setStatus("error");
     }
   }
