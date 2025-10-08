@@ -42,10 +42,7 @@ function useIsMobile() {
 
   useEffect(() => {
     const mql = window.matchMedia("(max-width: 767px)");
-
-    // aplicar estado inicial
     setIsMobile(mql.matches);
-
     const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
 
     if (typeof mql.addEventListener === "function") {
@@ -113,92 +110,96 @@ export default function Nav() {
     if (!isMobile && open) setOpen(false);
   }, [isMobile, open]);
 
+  // ⚠️ Importante: NÃO deixar transform ativo por padrão no <nav>
+  const navHideClasses =
+    isMobile && !open && hidden
+      ? "transform -translate-y-full transition-transform duration-300"
+      : "";
+
   return (
-    <nav
-      className={`sticky top-0 z-50 w-full transition-transform duration-300 ${
-        isMobile && !open && hidden ? "-translate-y-full" : "translate-y-0"
-      }`}
-    >
-      {/* Barra fixa com gradiente */}
-      <div
-        className="relative w-full"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(0,0,48,1) 0%, rgba(0,0,90,0.8) 100%)",
-        }}
-      >
-        <div className="relative z-10 mx-auto flex h-14 max-w-7xl items-center justify-between px-4 md:h-20">
-          {/* Logo + nome */}
-          <Link
-            href="/"
-            aria-label="Ir para a página inicial"
-            className="inline-flex items-center gap-2"
-          >
-            <Image
-              src="/logoavila.png"
-              alt="ÁvilaCred"
-              width={200}
-              height={200}
-              priority
-              className="h-7 w-auto md:h-10"
-              sizes="(min-width: 768px) 240px, 180px"
-            />
-            <span className="text-[#D4AF37] text-sm font-semibold md:text-base lg:text-lg">
-              ÁvilaCred
-            </span>
-          </Link>
-
-          {/* Links (desktop) */}
-          <ul className="hidden items-center gap-2 md:flex">
-            <li>
-              <NavLink href="/sobre" label="Sobre" />
-            </li>
-            <li>
-              <NavLink href="/precatorios" label="Precatórios" />
-            </li>
-            <li>
-              <NavLink href="/blog" label="Blog" />
-            </li>
-          </ul>
-
-          {/* CTA (desktop) + Hamburguer (mobile) */}
-          <div className="flex items-center">
+    <>
+      <nav className={`sticky top-0 z-50 w-full ${navHideClasses}`}>
+        {/* Barra fixa com gradiente */}
+        <div
+          className="relative w-full"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,48,1) 0%, rgba(0,0,90,0.8) 100%)",
+          }}
+        >
+          <div className="relative z-10 mx-auto flex h-14 max-w-7xl items-center justify-between px-4 md:h-20">
+            {/* Logo + nome */}
             <Link
-              href="/contato"
-              className="hidden items-center rounded-xl bg-[#EBBD46] px-4 py-2 text-sm font-semibold text-[#000030] shadow-sm transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(235,189,70,.35)] md:inline-flex md:px-5 md:py-2.5"
+              href="/"
+              aria-label="Ir para a página inicial"
+              className="inline-flex items-center gap-2"
             >
-              Fale com um especialista
+              <Image
+                src="/logoavila.png"
+                alt="ÁvilaCred"
+                width={200}
+                height={200}
+                priority
+                className="h-7 w-auto md:h-10"
+                sizes="(min-width: 768px) 240px, 180px"
+              />
+              <span className="text-[#D4AF37] text-sm font-semibold md:text-base lg:text-lg">
+                ÁvilaCred
+              </span>
             </Link>
 
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-lg p-2 text-white/90 outline-none transition hover:bg-white/10 md:hidden"
-              aria-label="Abrir menu"
-              aria-expanded={open}
-              onClick={() => setOpen(true)}
-            >
-              <Menu className="h-6 w-6" />
-            </button>
+            {/* Links (desktop) */}
+            <ul className="hidden items-center gap-2 md:flex">
+              <li>
+                <NavLink href="/sobre" label="Sobre" />
+              </li>
+              <li>
+                <NavLink href="/precatorios" label="Precatórios" />
+              </li>
+              <li>
+                <NavLink href="/blog" label="Blog" />
+              </li>
+            </ul>
+
+            {/* CTA (desktop) + Hamburguer (mobile) */}
+            <div className="flex items-center">
+              <Link
+                href="/contato"
+                className="hidden items-center rounded-xl bg-[#EBBD46] px-4 py-2 text-sm font-semibold text-[#000030] shadow-sm transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(235,189,70,.35)] md:inline-flex md:px-5 md:py-2.5"
+              >
+                Fale com um especialista
+              </Link>
+
+              <button
+                type="button"
+                className="inline-flex items-center justify-center rounded-lg p-2 text-white/90 outline-none transition hover:bg-white/10 md:hidden"
+                aria-label="Abrir menu"
+                aria-expanded={open}
+                onClick={() => setOpen(true)}
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+            </div>
           </div>
+
+          {/* Filete dourado */}
+          <div className="absolute inset-x-0 bottom-0 h-1 bg-[#EBBD46]/90 md:h-2" />
         </div>
+      </nav>
 
-        {/* Filete dourado */}
-        <div className="absolute inset-x-0 bottom-0 h-1 bg-[#EBBD46]/90 md:h-2" />
-      </div>
-
-      {/* Overlay clicável (fecha ao tocar fora) */}
+      {/* Overlay clicável (fora do <nav>) */}
       <button
         aria-hidden={!open}
         onClick={() => setOpen(false)}
-        className={`fixed inset-0 z-40 bg-black/40 transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 z-[60] bg-black/40 transition-opacity duration-300 md:hidden ${
           open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       />
 
-      {/* Drawer MOBILE */}
+      {/* Drawer MOBILE (fora do <nav>) */}
       <aside
         className={`
-          fixed right-0 top-0 z-50 grid w-[88%] max-w-[420px]
+          fixed right-0 top-0 z-[70] grid w-[88%] max-w-[420px]
           grid-rows-[auto_1fr_auto]
           text-white transition-transform duration-300 md:hidden
           ${open ? "translate-x-0" : "translate-x-full"}
@@ -207,7 +208,7 @@ export default function Nav() {
         aria-modal="true"
         aria-label="Menu"
         style={{
-          height: "100dvh",
+          height: "100svh", // lida melhor com barras do mobile
           background:
             "linear-gradient(180deg,rgba(0,0,48,1) 0%,rgba(0,0,90,1) 100%)",
         }}
@@ -262,7 +263,7 @@ export default function Nav() {
         {/* filete dourado no rodapé do drawer */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1.5 bg-[#EBBD46]/90" />
       </aside>
-    </nav>
+    </>
   );
 }
 
